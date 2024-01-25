@@ -6,6 +6,8 @@ var answers = $('.answers');
 var button = $('<button>');
 var instruction = $('.intro');
 var score = 0;
+var end = $(".end");
+var leaderBoard = $('.leaderBoard');
 
 //countdown timer function updates time after time runs out calls endGame function
 function countDown() {
@@ -13,6 +15,7 @@ function countDown() {
         timer.text('Time: ' + time);
         time --;
     }else {
+        time = 999;
         endGame();
     }
 }
@@ -141,6 +144,7 @@ function questionFive(event){
     function() {
         $('<p>Right!</p>').appendTo(answers);
         score = time;
+        time = 999;
         setTimeout(endGame, 2000);
     });
     $('<button>strong:</button></br>').appendTo(answers).on('click', 
@@ -148,6 +152,7 @@ function questionFive(event){
         $('<p>Wrong!</p>').appendTo(answers);
         time = time - 5;
         score = time;
+        time = 999;
         setTimeout(endGame, 2000);
     });
     $('<button>font-family:</button></br>').appendTo(answers).on('click', 
@@ -155,6 +160,7 @@ function questionFive(event){
         $('<p>Wrong!</p>').appendTo(answers);
         time = time - 5;
         score = time;
+        time = 999;
         setTimeout(endGame, 2000);
     });
     $('<button>background-color:</button></br>').appendTo(answers).on('click', 
@@ -162,16 +168,35 @@ function questionFive(event){
         $('<p>Wrong!</p>').appendTo(answers);
         time = time - 5;
         score = time;
+        time = 999;
         setTimeout(endGame, 2000);
     });
 }
 
-//function called when the game is over either by answering all questions or running out of time
+//function called when the game is over either by answering all questions or running out of time gets a name from the user and assign it to the score in local storage
 function endGame(){
     question.empty();
     answers.empty();
-    question.text("Game over! your final score is " + score);
+    question.text("Game over! Your final score is " + score);
+    var name = $('<input type="text">').appendTo(end);
+    //var name = $('#name').val();
+    $('<button>Submit</button>').appendTo(end).on('click', function(event){
+        event.preventDefault();
+        var object = {
+            User: name.val(),
+            userScore: score
+        };
+        localStorage.setItem("leaderBoard", JSON.stringify(object));
+        scoreBoard();
+    });
 
+}
+
+function scoreBoard() {
+    question.empty();
+    answers.empty();
+    end.empty();
+    $('<h1>Highscores!</h1>').appendTo(leaderBoard);
 }
 
 //start game event starts timer as well as calls the first question
