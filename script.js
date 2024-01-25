@@ -179,24 +179,32 @@ function endGame(){
     answers.empty();
     question.text("Game over! Your final score is " + score);
     var name = $('<input type="text">').appendTo(end);
-    //var name = $('#name').val();
     $('<button>Submit</button>').appendTo(end).on('click', function(event){
         event.preventDefault();
         var object = {
             User: name.val(),
             userScore: score
         };
-        localStorage.setItem("leaderBoard", JSON.stringify(object));
+        localStorage.setItem("leaderBoards", JSON.stringify(object));
         scoreBoard();
     });
 
 }
 
+//clears all fields then shows the leader board of scores saved to local storage
 function scoreBoard() {
     question.empty();
     answers.empty();
     end.empty();
     $('<h1>Highscores!</h1>').appendTo(leaderBoard);
+    var scoresArray = [];
+    scoresArray = JSON.parse(localStorage.getItem("leaderBoards"));
+    console.log(scoresArray);
+    for (var i = 0; i <= scoresArray.length; i++) {
+        var x = scoresArray[i];
+        console.log(x);
+        $('<p></p></br>').append(x);
+    }
 }
 
 //start game event starts timer as well as calls the first question
